@@ -2,3 +2,4 @@ fastmcp
 supabase
 python-dotenv
 requestsgit
+uvicorn
