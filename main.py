@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 import statistics
 
+print("INICIANDO MCP BIU")
+
 load_dotenv()
 
 # CONEXION A SUPABASE
@@ -16,7 +18,7 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-mcp = FastMCP("MCP Estación Meteorológica BIU", debug=True)
+mcp = FastMCP("MCP Estación Meteorológica BIU")
 
 TABLA = "datos_meteorologicos"
 def limpiar_valores(datos, campo): 
