@@ -143,8 +143,9 @@ def _datos_para_dashboard(limite=100):
         "tabla": _obtener_ultimas_lecturas(limite)
     }
 
+
 # ==========================
-# HERRAMIENTAS MCP
+# HERRAMIENTAS MCP Proporcionadas por el Profesor)
 # ==========================
 
 @mcp.tool()
@@ -158,78 +159,22 @@ def obtener_ultima_lectura():
     - presión actual
     - última lectura del sensor
     - estado actual de la estación meteorológica
-
-    Devuelve:
-    - id
-    - fecha y hora de registro
-    - temperatura
-    - humedad
-    - presión atmosférica
-    - Coordenadas de ubicación de la estación: latitud y longitud
-
-    No usar para:
-    - históricos
-    - gráficos
-    - promedios
-    - análisis de tendencias
     """
     return _obtener_ultima_lectura()
 
 
 @mcp.tool()
-def obtener_ultimas_lecturas(limite: int = 10):
+def obtener_ultimas_lecturas(limite: int = 50):
     """
     Obtiene las últimas lecturas registradas en la estación meteorológica.
-
-    Usar esta herramienta cuando el usuario pida:
-    - últimas lecturas
-    - tabla de datos recientes
-    - registros recientes del sensor
-    - listado de mediciones
-    - últimos datos guardados en Supabase
-
-    Parámetros:
-    - limite: número máximo de registros a devolver. Por defecto 10.
-
-    Devuelve una lista ordenada desde la lectura más reciente hacia atrás.
-
-    No usar para:
-    - resumen estadístico
-    - alertas
-    - gráficos cronológicos completos
     """
     return _obtener_ultimas_lecturas(limite)
 
 
 @mcp.tool()
-def obtener_datos_grafico(limite: int = 20):
+def obtener_datos_grafico(limite: int = 100):
     """
     Obtiene datos meteorológicos preparados para construir gráficos.
-
-    Usar esta herramienta cuando el usuario solicite:
-    - gráfico de temperatura
-    - gráfico de humedad
-    - gráfico de presión
-    - serie temporal
-    - visualización histórica
-    - datos para dashboard gráfico
-
-    Parámetros:
-    - limite: número máximo de registros a devolver. Por defecto 20.
-
-    Devuelve:
-    - fecha y hora
-    - temperatura
-    - humedad
-    - presión
-    - id del sensor
-
-    Los datos se devuelven ordenados cronológicamente.
-
-    No usar para:
-    - última lectura actual
-    - tabla de registros recientes
-    - alertas automáticas
     """
     return _obtener_datos_grafico(limite)
 
@@ -238,28 +183,6 @@ def obtener_datos_grafico(limite: int = 20):
 def obtener_resumen_estacion(limite: int = 100):
     """
     Calcula un resumen estadístico de la estación meteorológica.
-
-    Usar esta herramienta cuando el usuario pregunte por:
-    - promedio de temperatura
-    - temperatura máxima o mínima
-    - humedad promedio
-    - presión promedio
-    - resumen general de la estación
-    - estadísticas de las lecturas
-
-    Parámetros:
-    - limite: cantidad de lecturas recientes que se usarán para calcular el resumen. Por defecto 100.
-
-    Devuelve:
-    - total de lecturas analizadas
-    - temperatura promedio, máxima y mínima
-    - humedad promedio, máxima y mínima
-    - presión promedio, máxima y mínima
-
-    No usar para:
-    - obtener solo la última lectura
-    - generar una tabla detallada
-    - detectar alertas actuales
     """
     return _obtener_resumen_estacion(limite)
 
@@ -268,29 +191,6 @@ def obtener_resumen_estacion(limite: int = 100):
 def detectar_alertas():
     """
     Detecta alertas meteorológicas usando la última lectura registrada.
-
-    Usar esta herramienta cuando el usuario pregunte:
-    - hay alertas
-    - estado de riesgo
-    - temperatura alta
-    - posible lluvia
-    - humedad elevada
-    - estado actual de la estación
-
-    Criterios de alerta:
-    - temperatura >= 35: temperatura alta
-    - temperatura <= 15: temperatura baja
-    - humedad >= 85: humedad elevada
-    - presión < 1000: posible lluvia
-
-    Devuelve:
-    - estado general: Normal o Con alertas
-    - lista de alertas detectadas
-
-    No usar para:
-    - análisis histórico
-    - gráficos
-    - promedios
     """
     return _detectar_alertas()
 
@@ -299,62 +199,8 @@ def detectar_alertas():
 def datos_para_dashboard(limite: int = 100):
     """
     Obtiene todos los datos necesarios para construir un dashboard meteorológico completo.
-
-    Usar esta herramienta cuando el usuario solicite:
-    - crear dashboard
-    - panel meteorológico
-    - página web de monitoreo
-    - dashboard tipo Power BI
-    - dashboard tipo Grafana
-    - indicadores, gráficos, alertas y tabla en una sola vista
-
-    Parámetros:
-    - limite: número máximo de registros recientes para gráficos, tabla y resumen. Por defecto 100.
-
-    Devuelve:
-    - última lectura
-    - resumen estadístico
-    - alertas actuales
-    - histórico para gráficos
-    - tabla de lecturas recientes
-
-    Esta es la herramienta recomendada para construir interfaces web, dashboards o reportes completos.
     """
     return _datos_para_dashboard(limite)
-
-@mcp.prompt()
-def prompt_dashboard_tendencias(fecha_inicio: str, fecha_fin: str):
-    """
-    Prompt para analizar tendencias entre dos fechas.
-    """
-    return f"""
-Utiliza la herramienta obtener_lecturas_por_fecha(
-    fecha_inicio="{fecha_inicio}",
-    fecha_fin="{fecha_fin}"
-).
-
-Construye un dashboard analítico de tendencias para una estación meteorológica.
-
-Incluye:
-
-1. Serie temporal de temperatura.
-2. Serie temporal de humedad.
-3. Serie temporal de presión atmosférica.
-5. Detección automática de:
-   - Picos máximos
-   - Picos mínimos
-   - Cambios bruscos
-6. Estadísticas:
-   - Promedio
-   - Desviación estándar
-   - Valor máximo
-   - Valor mínimo
-7. Conclusiones automáticas sobre el comportamiento de la estación.
-
-El dashboard debe ser una página web descargable.
-Entrega el resultado como una página web completa en HTML, CSS y JavaScript.
-El diseño debe ser tipo Power BI o Grafana.
-"""
 
 @mcp.prompt()
 def prompt_dashboard_personalizado(tipo_dashboard: str = "ejecutivo", limite: int = 100):
@@ -367,3 +213,6 @@ Incluye KPIs, gráficos interactivos, alertas automáticas, tabla de lecturas re
 
 Entrega el resultado como una página web completa en HTML, CSS y JavaScript.
 """
+
+if __name__ == "__main__":
+    mcp.run()
