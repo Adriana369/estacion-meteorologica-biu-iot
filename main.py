@@ -367,5 +367,3 @@ Incluye KPIs, gráficos interactivos, alertas automáticas, tabla de lecturas re
 
 Entrega el resultado como una página web completa en HTML, CSS y JavaScript.
 """
-if __name__ == "__main__":
-    mcp.run()
