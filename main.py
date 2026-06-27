@@ -25,9 +25,9 @@ def limpiar_valores(datos, campo):
               if x.get(campo) is not None 
               ]
 
-# ==========================
-# FUNCIONES INTERNAS PROPORCIONADAS POR EL DOCENTE
-# ==========================
+# ==================================================================================
+# FUNCIONES INTERNAS PROPORCIONADAS POR EL DOCENTE QUE EXTRAEN LOS DATOS DE LA TABLA
+# ===================================================================================
 
 def _obtener_ultima_lectura():
 
@@ -45,7 +45,7 @@ def _obtener_ultima_lectura():
     return response.data[0]
 
 
-def _obtener_ultimas_lecturas(limite=50):
+def _obtener_ultimas_lecturas(limite=10):
 
     response = (
         supabase.table(TABLA)
@@ -58,7 +58,7 @@ def _obtener_ultimas_lecturas(limite=50):
     return response.data
 
 
-def _obtener_datos_grafico(limite=100):
+def _obtener_datos_grafico(limite=20):
 
 
 #Obtener los datos registrados en la tabla datos_meteorologicos
@@ -73,12 +73,12 @@ def _obtener_datos_grafico(limite=100):
     return response.data
 
 
-def _obtener_resumen_estacion(limite=100):
+def _obtener_resumen_estacion(limite=20):
 
     datos = _obtener_ultimas_lecturas(limite)
 
     if not datos:
-        return {"mensaje": "No hay datos"}
+        return {"mensaje": "No se encuentran datos registrados en la Estación Meterologica BIU"}
 
     temperaturas = limpiar_valores(datos, "temperatura")
     humedades = limpiar_valores(datos, "humedad")
@@ -96,7 +96,9 @@ def _obtener_resumen_estacion(limite=100):
         "humedad_minima": min(humedades),
         "presion_promedio": round(statistics.mean(presiones),2),
         "presion_maxima": max(presiones),
-        "presion_minima": min(presiones)
+        "presion_minima": min(presiones),
+        "ultima_latitud": latitudes[-1] if latitudes else None,
+        "ultima_longitud": longitudes[-1] if longitudes else None
     }
 
 
@@ -175,7 +177,7 @@ def obtener_ultima_lectura():
 
 
 @mcp.tool()
-def obtener_ultimas_lecturas(limite: int = 50):
+def obtener_ultimas_lecturas(limite: int = 10):
     """
     Obtiene las últimas lecturas registradas en la estación meteorológica.
 
@@ -187,7 +189,7 @@ def obtener_ultimas_lecturas(limite: int = 50):
     - últimos datos guardados en Supabase
 
     Parámetros:
-    - limite: número máximo de registros a devolver. Por defecto 50.
+    - limite: número máximo de registros a devolver. Por defecto 10.
 
     Devuelve una lista ordenada desde la lectura más reciente hacia atrás.
 
@@ -200,7 +202,7 @@ def obtener_ultimas_lecturas(limite: int = 50):
 
 
 @mcp.tool()
-def obtener_datos_grafico(limite: int = 100):
+def obtener_datos_grafico(limite: int = 20):
     """
     Obtiene datos meteorológicos preparados para construir gráficos.
 
@@ -213,7 +215,7 @@ def obtener_datos_grafico(limite: int = 100):
     - datos para dashboard gráfico
 
     Parámetros:
-    - limite: número máximo de registros a devolver. Por defecto 100.
+    - limite: número máximo de registros a devolver. Por defecto 20.
 
     Devuelve:
     - fecha y hora
@@ -365,3 +367,5 @@ Incluye KPIs, gráficos interactivos, alertas automáticas, tabla de lecturas re
 
 Entrega el resultado como una página web completa en HTML, CSS y JavaScript.
 """
+if __name__ == "__main__":
+    mcp.run()
