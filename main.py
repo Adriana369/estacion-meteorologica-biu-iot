@@ -16,7 +16,7 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-mcp = FastMCP("MCP Estación Meteorológica BIU")
+mcp = FastMCP("MCP Estación Meteorológica BIU", debug=True)
 
 TABLA = "datos_meteorologicos"
 def limpiar_valores(datos, campo): 
@@ -64,7 +64,7 @@ def _obtener_datos_grafico(limite=20):
 #Obtener los datos registrados en la tabla datos_meteorologicos
     response = (
         supabase.table(TABLA)
-        .select("created_at,temtemperatura,humedad,presion,latitud, longitud")
+        .select("created_at,temperatura,humedad,presion,latitud,longitud")
         .order("created_at")
         .limit(limite)
         .execute()
@@ -88,7 +88,7 @@ def _obtener_resumen_estacion(limite=20):
 
     return {
         "total_lecturas": len(datos),
-        "temperatura_promedio": round(statistics.mean(temperaturas),2),
+        "temperatura_promedio": round(statistics.mean(temperaturas),2) if temperaturas else None,
         "temperatura_maxima": max(temperaturas),
         "temperatura_minima": min(temperaturas),
         "humedad_promedio": round(statistics.mean(humedades),2),
@@ -368,4 +368,4 @@ Incluye KPIs, gráficos interactivos, alertas automáticas, tabla de lecturas re
 Entrega el resultado como una página web completa en HTML, CSS y JavaScript.
 """
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="sse")
